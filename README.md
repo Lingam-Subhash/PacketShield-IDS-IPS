@@ -1,79 +1,3 @@
-# Network IDS & IPS - Comprehensive User Manual
-
-A lightweight, modular, and thread-safe **Network Intrusion Detection System (IDS) & Intrusion Prevention System (IPS)** built in Python using Scapy. It captures real-time network traffic, evaluates header attributes against dynamic signature thresholds, logs warnings, and blocks threatening hosts.
-
----
-
-## 🛠️ Complete Project Directory Structure
-
-```text
-ids_ips_project/
-│
-├── main.py                     # Central coordinator & orchestrator
-├── requirements.txt            # Python dependencies (scapy, colorama)
-├── README.md                   # Professional user manual & guide
-├── simulate_attacks.py         # Attack generator & packet injector
-├── test_ids_ips.py             # Complete logic validation suite
-│
-├── config/
-│   └── settings.py             # Alert thresholds & block window settings
-│
-├── sniffer/
-│   └── packet_sniffer.py       # Threaded raw socket sniffer with fallback listener
-│
-├── analyzer/
-│   └── packet_analyzer.py      # Layer extraction & header field decoder
-│
-├── detection/
-│   ├── port_scan_detector.py   # Signature module: Port Scan attacks
-│   ├── syn_flood_detector.py   # Signature module: TCP SYN flood DDoS attacks
-│   ├── icmp_flood_detector.py  # Signature module: ICMP Ping flood attacks
-│   └── brute_force_detector.py # Signature module: Rapid SSH/FTP brute force
-│
-├── prevention/
-│   └── blocker.py              # IPS Block Engine & system firewall rules
-│
-├── logger/
-│   └── logger.py               # Writes persistent .log alerts & forensics CSV
-│
-├── storage/
-│   ├── blocked_ips.txt         # Blocked attacker IP addresses
-│   ├── alerts.log              # Human readable security events log
-│   └── traffic_data.csv        # Raw traffic statistics CSV
-│
-└── utils/
-    ├── helpers.py              # Banners, log wrappers, and IP check functions
-    └── time_utils.py           # Timing utilities for sliding epoch windows
-```
-
----
-
-## 💡 System Architecture and Workflow
-
-```mermaid
-graph TD
-    A[Network Interface / Raw Traffic] -->|1. Capture Packet| B[packet_sniffer.py]
-    B -->|2. Hand-off Object| C[packet_analyzer.py]
-    C -->|3. Extract Header Fields| D{IP Layer Found?}
-    D -- No --> E[Ignore Packet]
-    D -- Yes --> F[Check IPS Blocker]
-    F -->|4. Is Source IP Blocked?| G{Yes / No}
-    G -- Yes --> H[Drop Packet Silently]
-    G -- No --> I[Log Raw Traffic to CSV]
-    I -->|5. Forward Metadata| J[Run Intrusion Detection Engines]
-    J --> K[Port Scan Detector]
-    J --> L[SYN Flood Detector]
-    J --> M[ICMP Flood Detector]
-    J --> N[Brute Force Detector]
-    K & L & M & N -->|6. Threat Found?| O{Yes / No}
-    O -- No --> P[Process Packet Normally]
-    O -- Yes --> Q[Add to Active Blocklist]
-    Q -->|7. IPS Block Action| R[Write to blocked_ips.txt]
-    Q -->|8. Alert Output| S[Write to alerts.log & Print Warning Banner]
-    Q -->|9. Optional OS Firewall| T[Exec Windows netsh / Linux iptables]
-```
-
----
 
 ## ⚡ Quick Setup & Dependency Installation
 
@@ -140,3 +64,7 @@ All attack thresholds are customized in [config/settings.py](file:///d:/ids%20ip
 * **Brute-Force:** Triggered when an IP initiates `BRUTE_FORCE_THRESHOLD` connections targeting standard authentication ports (`21` FTP, `22` SSH, `23` Telnet) within `BRUTE_FORCE_WINDOW` seconds.
 * **Active Blocking:** The ban duration is defined by `BLOCK_TIME` (in seconds). Set to `0` for permanent bans.
 * **Active OS Firewall Hook:** Set `EXECUTE_SYSTEM_BLOCK = True` inside `config/settings.py` to automatically configure `iptables` rules on Linux or `netsh` rules on Windows.
+=======
+# PacketShield-IDS-IPS
+A Python-based Integrated Network IDS/IPS Framework for Real-Time Threat Detection and Prevention.
+>>>>>>> 41b9f8e085afa3ff34157002bde37380f000232c
